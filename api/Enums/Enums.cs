@@ -15,10 +15,25 @@ namespace api.Enums
         five  = 5,
     }
 
-    public enum JobEnum
+    public enum CastRole
     {
-        Director,
-        Producer,
-        Actor,
+        Actor,             // بازیگر
+        Director,          // کارگردان
+        Writer,            // نویسنده
+        Producer,          // تهیه‌کننده
+        Cinematographer,   // فیلمبردار / مدیر تصویربرداری
+        Editor,            // تدوین‌گر
+        Composer,          // آهنگساز
+        SoundDepartment,   // بخش صدا
+        CostumeDesigner,   // طراح لباس
+        MakeupArtist,      // گریمور
+        VisualEffects,     // جلوه‌های ویژه
+        ArtDirector,       // مدیر هنری / طراحی صحنه
+        CastingDirector,   // مدیر انتخاب بازیگر
+        Stunt,             // بدل‌کار
+        ProductionManager, // مدیر تولید
+        LightingDepartment,// بخش نورپردازی
+        LocationManager,   // مسئول لوکیشن
+        Other              // سایر نقش‌ها
     }
 }
