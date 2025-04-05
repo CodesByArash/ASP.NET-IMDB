@@ -1,0 +1,46 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]ist/
+[Dd]istPublic/
+[Dd]ebugTest/
+[Dd]ebugTests/
+[Dd]istTest/
+[Dd]istTests/
+bin/
+obj/
+
+# User-specific files
+.idea/
+.vscode/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*~.ncb
+*.swp
+*.sln.docstates
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer Database files
+*.wixproj
+
+# Windows app specific files
+AppPackages/
+AppData/
+.vs2019/
+.vs2017/
+
+# JetBrains Rider files
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# User-specific files for Visual Studio for Mac
+.v
