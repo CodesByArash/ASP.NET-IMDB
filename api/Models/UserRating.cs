@@ -13,8 +13,6 @@ namespace api.Models
         
         public int? MovieId { get; set; }
         public int? SeriesId { get; set; }
-        public int? SeasonId { get; set; }
-        public int? EpisodeId { get; set; }
 
         public int UserId { get; set; }
 
@@ -23,8 +21,6 @@ namespace api.Models
 
         public Movie Movie { get; set; }
         public Series Series { get; set; }
-        public Season Season { get; set; }
-        public Episode Episode { get; set; }
         public User User { get; set; }
     }
 

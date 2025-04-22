@@ -12,5 +12,5 @@
         public double Rating { get; set; }
 
         public ICollection<UserRating> UserRatings { get; set; }
-        public ICollection<Season> Seasons { get; set; }
+        public ICollection<Cast> Casts { get; set; } 
     }

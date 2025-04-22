@@ -44,3 +44,6 @@ ScaffoldingReadMe.txt
 
 # User-specific files for Visual Studio for Mac
 .v
+
+# Database migrations
+Migrations/

@@ -23,4 +23,3 @@ namespace api.Models
         public ICollection<UserRating> UserRatings { get; set; }
     }
 }
-
