@@ -1,6 +1,7 @@
 namespace API.Dtos;
 
-public class CreateMovieRequest{
+public class UpdateMovieRequest
+{
         public string ImdbId { get; set; }
         public string Title { get; set; }
         public int ReleaseYear { get; set; }

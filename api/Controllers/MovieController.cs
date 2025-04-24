@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Data;
 using API.Dtos;
-using api.Models;
+
 
 namespace api.Controllers;
 
@@ -39,6 +39,23 @@ public class MovieController : ControllerBase
         _context.SaveChanges();
         return CreatedAtAction(nameof(GetDetail), new { id = movie.Id }, movie.ToMovieDto());
     }
+
+    [HttpPut]
+    [Route("{id}")]
+    public IActionResult Update([FromRoute] int id, [FromBody] UpdateMovieRequest movieDto){
+        var movieModel = _context.Movies.FirstOrDefault(x => x.Id == id);
+        if(movieModel == null)
+            return NotFound();
+        movieModel.Title = movieDto.Title;
+        movieModel.ReleaseYear = movieDto.ReleaseYear;
+        movieModel.Description = movieDto.Description;
+        movieModel.Duration = movieDto.Duration;
+        movieModel.Genre = movieDto.Genre;
+        movieModel.PosterUrl = movieDto.PosterUrl;
+        movieModel.Rating = movieDto.Rating;
+        _context.SaveChanges();
+        return Ok(movieModel.ToMovieDto());
+    }
 }
 
- 
+   
