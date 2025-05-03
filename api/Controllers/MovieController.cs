@@ -15,7 +15,7 @@ public class MovieController : ControllerBase
 
     private readonly IMovieRepository _movieRepository;
     private readonly ApplicationDBContext _context;
-    public MovieController(ApplicationDBContext context, IMovieRepository movieRepository)
+    public MovieController(ApplicationDBContext context)
     {
         _movieRepository = new MovieRepository(context);
         _context = context;

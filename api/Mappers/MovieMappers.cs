@@ -15,7 +15,7 @@ public static class MovieMappers
             Genre = movieModel.Genre,
             PosterUrl = movieModel.PosterUrl,
             Rate = movieModel.Rate,
-            Comments = movieModel.Comments.Select(c => c.ToCommentDto()).ToList(),
+            // Comments = movieModel.Comments.Select(c => c.ToCommentDto()).ToList(),
         };
     }
 
