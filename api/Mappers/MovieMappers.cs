@@ -14,7 +14,8 @@ public static class MovieMappers
             Duration = movieModel.Duration,
             Genre = movieModel.Genre,
             PosterUrl = movieModel.PosterUrl,
-            Rating = movieModel.Rating,
+            Rate = movieModel.Rate,
+            Comments = movieModel.Comments.Select(c => c.ToCommentDto()).ToList(),
         };
     }
 
@@ -28,7 +29,8 @@ public static class MovieMappers
             Duration = movieDto.Duration,
             Genre = movieDto.Genre,
             PosterUrl = movieDto.PosterUrl,
-            Rating = movieDto.Rating,
+            Rate = movieDto.Rate,
+            // Comments = movieDto.Comments
         };
     }
 }

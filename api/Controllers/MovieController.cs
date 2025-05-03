@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Data;
 using API.Dtos;
-
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using api.Interfaces;
+using api.Repository;
 
 namespace api.Controllers;
 
@@ -10,52 +13,53 @@ namespace api.Controllers;
 public class MovieController : ControllerBase
 {
 
-    private readonly MovieDatabaseContext _context;
-    public MovieController(MovieDatabaseContext context)
+    private readonly IMovieRepository _movieRepository;
+    private readonly ApplicationDBContext _context;
+    public MovieController(ApplicationDBContext context, IMovieRepository movieRepository)
     {
+        _movieRepository = new MovieRepository(context);
         _context = context;
     }
     
     [HttpGet]
-    public IActionResult GetList()
+    public async Task<IActionResult> GetList()
     {
-        var movies = _context.Movies.Select(movie => movie.ToMovieDto()).ToList();
-        return Ok(movies);
+        var movies = await _movieRepository.GetAllAsync();
+        var movieDto = movies.Select(movie => movie.ToMovieDto()).ToList();
+        return Ok(movieDto);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetDetail([FromRoute] int id)
+    public async Task<IActionResult> GetDetail([FromRoute] int id)
     {
-        var movie = _context.Movies.Find(id)?.ToMovieDto();
+        var movie = await _movieRepository.GetByIdAsync(id);
         if(movie == null)
             return NotFound();
-        return Ok(movie);
+        return Ok(movie.ToMovieDto());
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateMovieRequest movieDto){
+    public async Task<IActionResult> Create([FromBody] CreateMovieRequest movieDto){
         var movie = movieDto.ToMovieModel();
-        _context.Movies.Add(movie);
-        _context.SaveChanges();
+        await _movieRepository.CreateAsync(movie);
         return CreatedAtAction(nameof(GetDetail), new { id = movie.Id }, movie.ToMovieDto());
     }
 
     [HttpPut]
     [Route("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] UpdateMovieRequest movieDto){
-        var movieModel = _context.Movies.FirstOrDefault(x => x.Id == id);
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateMovieRequest movieDto){
+        var movieModel = await _movieRepository.UpdateAsync(id, movieDto);
         if(movieModel == null)
             return NotFound();
-        movieModel.Title = movieDto.Title;
-        movieModel.ReleaseYear = movieDto.ReleaseYear;
-        movieModel.Description = movieDto.Description;
-        movieModel.Duration = movieDto.Duration;
-        movieModel.Genre = movieDto.Genre;
-        movieModel.PosterUrl = movieDto.PosterUrl;
-        movieModel.Rating = movieDto.Rating;
-        _context.SaveChanges();
+        return Ok(movieModel.ToMovieDto());
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id ){
+        var movieModel = await _movieRepository.DeleteAsync(id);
+        if (movieModel == null)
+            return NotFound();
         return Ok(movieModel.ToMovieDto());
     }
 }
-
-   

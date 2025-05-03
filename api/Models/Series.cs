@@ -1,16 +1,20 @@
-﻿namespace api.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace api.Models;
 
     public class Series
     {
         public int Id { get; set; }
-        public string ImdbId { get; set; }
-        public string Title { get; set; }
+        public required string ImdbId { get; set; }
+        public required string Title { get; set; }
         public int ReleaseYear { get; set; }
-        public string Description { get; set; }
-        public string PosterUrl { get; set; }
-
+        public required string Description { get; set; }
+        public required string PosterUrl { get; set; }
         public double Rating { get; set; }
-
-        public ICollection<UserRating> UserRatings { get; set; }
-        public ICollection<Cast> Casts { get; set; } 
+        [NotMapped]
+        public ICollection<Cast> Cast { get; set; }
+        [NotMapped]
+        public ICollection<Comment> Comments { get; set; }
+        [NotMapped]
+        public ICollection<Rate> Rates { get; set; }
     }

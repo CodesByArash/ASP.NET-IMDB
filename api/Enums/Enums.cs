@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace api.Enums
 {
-    public enum MovieScoreEnum
+    public enum ScoreEnum
     {
-        zero  = 0,
-        one   = 1,
-        two   = 2,
-        three = 3,
-        four  = 4,
-        five  = 5,
+        Zero = 0,
+        One = 1,
+        Two = 2,
+        Three = 3,
+        Four = 4,
+        Five = 5
     }
 
     public enum CastRole
@@ -36,4 +36,11 @@ namespace api.Enums
         LocationManager,   // مسئول لوکیشن
         Other              // سایر نقش‌ها
     }
+
+    public enum ContentTypeEnum
+    {
+        Movie,
+        Series,
+    }
+
 }

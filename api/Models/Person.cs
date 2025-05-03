@@ -1,14 +1,16 @@
-﻿namespace api.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace api.Models;
 
 
     public class Person
     {
         public int Id { get; set; }
-        public string ImdbId { get; set; }
-        public string FullName { get; set; }
+        public required string ImdbId { get; set; }
+        public required string FullName { get; set; }
         public DateTime BirthDate { get; set; }
-        public string Bio { get; set; }
-        public string PhotoUrl { get; set; }
-
-        public ICollection<Cast> Casts { get; set; }
+        public required string Bio { get; set; }
+        public required string PhotoUrl { get; set; }
+        [NotMapped]
+        public ICollection<Cast> Cast { get; set; }
     }

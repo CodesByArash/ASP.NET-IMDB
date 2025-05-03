@@ -1,21 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using api.Enums;
+using api.Models;
 
-namespace api.Models
+public class Comment
 {
-    public class Comment
-    {
-        public int Id { get; set; }
-        public int MovieId{ get; set; }
-        public Movie? Movie{ get; set; }
-        public int UserId{ get; set; }
-        public User? User{ get; set; }
-        public string Title {get; set;} = string.Empty;
-        public string Content {get; set;} = string.Empty;
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
-        public DateTime LastUpdatedOn { get; set;} = DateTime.Now;
-
-    }
+    public int Id { get; set; }
+    public ContentTypeEnum ContentType { get; set; }
+    public int ContentId { get; set; }
+    public string UserId { get; set; }
+    public required AppUser User { get; set; }
+    public string Text {get; set;} = string.Empty;
+    public DateTime CreatedOn { get; set; } = DateTime.Now;
+    public DateTime LastUpdatedOn { get; set;} = DateTime.Now;
 }
