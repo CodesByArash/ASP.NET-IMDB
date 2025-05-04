@@ -14,10 +14,12 @@ public class MovieController : ControllerBase
 {
 
     private readonly IMovieRepository _movieRepository;
+    private readonly ICommentRepository _commentRepository;
     private readonly ApplicationDBContext _context;
     public MovieController(ApplicationDBContext context)
     {
         _movieRepository = new MovieRepository(context);
+        _commentRepository = new CommentRepository(context);
         _context = context;
     }
     
@@ -35,6 +37,8 @@ public class MovieController : ControllerBase
         var movie = await _movieRepository.GetByIdAsync(id);
         if(movie == null)
             return NotFound();
+        var comments = await _commentRepository.GetAllByMovieIdAsync(movie.Id);
+        movie.Comments = comments;
         return Ok(movie.ToMovieDetailDto());
     }
 

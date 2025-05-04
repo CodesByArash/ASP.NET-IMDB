@@ -99,4 +99,3 @@ public class ApplicationDBContext : IdentityDbContext<AppUser>
             .HasConversion<string>();
     }
 }
-

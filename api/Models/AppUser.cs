@@ -13,4 +13,3 @@ namespace api.Models
         public ICollection<Rate> Rates { get; set; }
     }
 }
-

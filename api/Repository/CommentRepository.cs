@@ -1,4 +1,5 @@
 using api.Data;
+using api.Enums;
 using api.Interfaces;
 using api.Models;
 using API.Dtos;
@@ -19,6 +20,20 @@ public class CommentRepository : ICommentRepository
     {
         return await _context.Comments
             .Include(c => c.User)
+            .ToListAsync();
+    }
+
+    public async Task<List<Comment>> GetAllBySeriesIdAsync(int seriesId)
+    {
+        return await _context.Comments
+            .Include(c => c.User).Where(c => c.ContentType == ContentTypeEnum.Series && c.ContentId == seriesId)
+            .ToListAsync();
+    }
+
+        public async Task<List<Comment>> GetAllByMovieIdAsync(int movieId)
+    {
+        return await _context.Comments
+            .Include(c => c.User).Where(c => c.ContentType == ContentTypeEnum.Movie && c.ContentId == movieId)
             .ToListAsync();
     }
 

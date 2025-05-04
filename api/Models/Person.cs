@@ -11,6 +11,5 @@ namespace api.Models;
         public DateTime BirthDate { get; set; }
         public required string Bio { get; set; }
         public required string PhotoUrl { get; set; }
-        [NotMapped]
         public ICollection<Cast> Cast { get; set; }
     }

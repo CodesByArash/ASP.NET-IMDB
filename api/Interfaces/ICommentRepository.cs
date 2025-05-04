@@ -6,6 +6,9 @@ namespace api.Interfaces;
 public interface ICommentRepository
 {
     public Task<List<Comment>> GetAllAsync();
+
+    public Task<List<Comment>> GetAllByMovieIdAsync(int movieId);
+    public Task<List<Comment>> GetAllBySeriesIdAsync(int seriesId);
     public Task<Comment?> GetByIdAsync(int id);
     public Task<Comment> CreateAsync(Comment comment);
     public Task<Comment?> UpdateAsync(int id, CreateCommentRequest commentDto);

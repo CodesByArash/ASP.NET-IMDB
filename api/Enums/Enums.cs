@@ -67,4 +67,11 @@ namespace api.Enums
         War,
         Western
     }
+
+    public enum ContentEnum
+    {
+        Movie,
+        Series
+    }
+
 }
