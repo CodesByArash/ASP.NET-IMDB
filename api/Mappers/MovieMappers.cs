@@ -15,6 +15,21 @@ public static class MovieMappers
             Genre = movieModel.Genre,
             PosterUrl = movieModel.PosterUrl,
             Rate = movieModel.Rate,
+        };
+    }
+
+        public static MovieDetailDto ToMovieDetailDto(this Movie movieModel){
+        return new MovieDetailDto
+        {
+            Id = movieModel.Id,
+            ImdbId = movieModel.ImdbId,
+            Title = movieModel.Title,
+            ReleaseYear = movieModel.ReleaseYear,
+            Description = movieModel.Description,
+            Duration = movieModel.Duration,
+            Genre = movieModel.Genre,
+            PosterUrl = movieModel.PosterUrl,
+            Rate = movieModel.Rate,
             // Comments = movieModel.Comments.Select(c => c.ToCommentDto()).ToList(),
         };
     }
@@ -30,7 +45,6 @@ public static class MovieMappers
             Genre = movieDto.Genre,
             PosterUrl = movieDto.PosterUrl,
             Rate = movieDto.Rate,
-            // Comments = movieDto.Comments
         };
     }
 }

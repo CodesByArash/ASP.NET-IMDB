@@ -89,6 +89,14 @@ public class ApplicationDBContext : IdentityDbContext<AppUser>
         modelBuilder.Entity<Comment>()
             .Property(c => c.ContentType)
             .HasConversion<string>();
+
+        modelBuilder.Entity<Series>()
+            .Property(c => c.Genre)
+            .HasConversion<string>();
+        
+        modelBuilder.Entity<Movie>()
+            .Property(c => c.Genre)
+            .HasConversion<string>();
     }
 }
 

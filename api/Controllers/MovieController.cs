@@ -35,7 +35,7 @@ public class MovieController : ControllerBase
         var movie = await _movieRepository.GetByIdAsync(id);
         if(movie == null)
             return NotFound();
-        return Ok(movie.ToMovieDto());
+        return Ok(movie.ToMovieDetailDto());
     }
 
     [HttpPost]
