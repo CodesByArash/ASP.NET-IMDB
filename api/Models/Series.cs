@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using api.Enums;
 
 namespace api.Models;
 
@@ -10,11 +11,10 @@ namespace api.Models;
         public int ReleaseYear { get; set; }
         public required string Description { get; set; }
         public required string PosterUrl { get; set; }
-        public double Rating { get; set; }
+        public GenreEnum Genre { get; set; }
+        public double Rate { get; set; }
         [NotMapped]
         public ICollection<Cast> Cast { get; set; }
         [NotMapped]
         public ICollection<Comment> Comments { get; set; }
-        [NotMapped]
-        public ICollection<Rate> Rates { get; set; }
     }
