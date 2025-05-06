@@ -12,7 +12,7 @@ public static class MovieMappers
             ReleaseYear = movieModel.ReleaseYear,
             Description = movieModel.Description,
             Duration = movieModel.Duration,
-            Genre = movieModel.Genre,
+            Genre = movieModel.Genre.ToGenreDto(),
             PosterUrl = movieModel.PosterUrl,
             Rate = movieModel.Rate,
         };
@@ -27,7 +27,7 @@ public static class MovieMappers
             ReleaseYear = movieModel.ReleaseYear,
             Description = movieModel.Description,
             Duration = movieModel.Duration,
-            Genre = movieModel.Genre,
+            Genre = movieModel.Genre.ToGenreDto(),
             PosterUrl = movieModel.PosterUrl,
             Rate = movieModel.Rate,
             Comments = movieModel.Comments.Select(c => c.ToCommentDto()).ToList()
@@ -35,7 +35,6 @@ public static class MovieMappers
     }
 
     public static Movie ToMovieModel(this CreateMovieRequest movieDto){
-        Console.WriteLine(movieDto.Genre);
         return new Movie
         {
             ImdbId = movieDto.ImdbId,
@@ -43,7 +42,6 @@ public static class MovieMappers
             ReleaseYear = movieDto.ReleaseYear,
             Description = movieDto.Description,
             Duration = movieDto.Duration,
-            Genre = movieDto.Genre,
             PosterUrl = movieDto.PosterUrl,
             Rate = movieDto.Rate,
         };

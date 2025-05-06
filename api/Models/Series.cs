@@ -11,7 +11,8 @@ namespace api.Models;
         public int ReleaseYear { get; set; }
         public required string Description { get; set; }
         public required string PosterUrl { get; set; }
-        public GenreEnum Genre { get; set; }
+        public int GenreId { get; set; }
+        public Genre Genre { get; set; }        
         public double Rate { get; set; }
         [NotMapped]
         public ICollection<Cast> Cast { get; set; }

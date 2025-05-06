@@ -42,7 +42,7 @@ public class MovieRepository : IMovieRepository{
         existingMovie.ReleaseYear = movieDto.ReleaseYear;
         existingMovie.Description = movieDto.Description;
         existingMovie.Duration = movieDto.Duration;
-        existingMovie.Genre = movieDto.Genre;
+        existingMovie.GenreId = movieDto.GenreId;
         existingMovie.PosterUrl = movieDto.PosterUrl;
         existingMovie.Rate = movieDto.Rate;
         await _context.SaveChangesAsync();

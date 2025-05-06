@@ -17,6 +17,8 @@ public class ApplicationDBContext : IdentityDbContext<AppUser>
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Rate> Rates { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Genre> Genres { get; set; }
+
 
     public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContextOptions)
         : base(dbContextOptions)
@@ -70,6 +72,18 @@ public class ApplicationDBContext : IdentityDbContext<AppUser>
             .HasForeignKey(c => c.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        modelBuilder.Entity<Movie>()
+            .HasOne(m => m.Genre)
+            .WithMany(g => g.Movies)
+            .HasForeignKey(c => c.GenreId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Series>()
+            .HasOne(m => m.Genre)
+            .WithMany(g => g.Series)
+            .HasForeignKey(m=>m.GenreId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<Cast>()
             .Property(c => c.Role)
             .HasConversion<string>();
@@ -90,12 +104,12 @@ public class ApplicationDBContext : IdentityDbContext<AppUser>
             .Property(c => c.ContentType)
             .HasConversion<string>();
 
-        modelBuilder.Entity<Series>()
-            .Property(c => c.Genre)
-            .HasConversion<string>();
+        // modelBuilder.Entity<Series>()
+        //     .Property(c => c.Genre)
+        //     .HasConversion<string>();
         
-        modelBuilder.Entity<Movie>()
-            .Property(c => c.Genre)
-            .HasConversion<string>();
+        // modelBuilder.Entity<Movie>()
+        //     .Property(c => c.Genre)
+        //     .HasConversion<string>();
     }
 }

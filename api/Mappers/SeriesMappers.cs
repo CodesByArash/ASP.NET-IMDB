@@ -11,7 +11,7 @@ public static class SeriesMappers
             Title = seriesModel.Title,
             ReleaseYear = seriesModel.ReleaseYear,
             Description = seriesModel.Description,
-            Genre = seriesModel.Genre,
+            Genre = seriesModel.Genre.ToGenreDto(),
             PosterUrl = seriesModel.PosterUrl,
             Rate = seriesModel.Rate,
         };
@@ -25,7 +25,7 @@ public static class SeriesMappers
             Title = seriesModel.Title,
             ReleaseYear = seriesModel.ReleaseYear,
             Description = seriesModel.Description,
-            Genre = seriesModel.Genre,
+            Genre = seriesModel.Genre.ToGenreDto(),
             PosterUrl = seriesModel.PosterUrl,
             Rate = seriesModel.Rate,
             // Comments = movieModel.Comments.Select(c => c.ToCommentDto()).ToList(),
@@ -39,7 +39,6 @@ public static class SeriesMappers
             Title = seriesDto.Title,
             ReleaseYear = seriesDto.ReleaseYear,
             Description = seriesDto.Description,
-            Genre = seriesDto.Genre,
             PosterUrl = seriesDto.PosterUrl,
             Rate = seriesDto.Rate,
         };

@@ -41,7 +41,7 @@ public class SeriesRepository : ISeriesRepository{
         existingSeries.ImdbId = seriesDto.ImdbId;
         existingSeries.ReleaseYear = seriesDto.ReleaseYear;
         existingSeries.Description = seriesDto.Description;
-        existingSeries.Genre = seriesDto.Genre;
+        existingSeries.GenreId = seriesDto.GenreId;
         existingSeries.PosterUrl = seriesDto.PosterUrl;
         existingSeries.Rate = seriesDto.Rate;
         await _context.SaveChangesAsync();

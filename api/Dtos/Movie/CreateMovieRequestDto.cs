@@ -9,7 +9,7 @@ public class CreateMovieRequest
         public int ReleaseYear { get; set; }
         public string Description { get; set; } = string.Empty;
         public int Duration { get; set; }
-        public GenreEnum Genre { get; set; }
+        public int GenreId {get; set;}
         public string PosterUrl { get; set; } = string.Empty;
         public double Rate { get; set; }
 
