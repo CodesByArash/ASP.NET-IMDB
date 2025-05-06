@@ -8,19 +8,17 @@ using api.Repository;
 
 namespace api.Controllers;
 
-[Route("api/Movie")]
+[Route("api/[controller]")]
 [ApiController]
 public class MovieController : ControllerBase
 {
 
     private readonly IMovieRepository _movieRepository;
     private readonly ICommentRepository _commentRepository;
-    private readonly ApplicationDBContext _context;
     public MovieController(ApplicationDBContext context)
     {
         _movieRepository = new MovieRepository(context);
         _commentRepository = new CommentRepository(context);
-        _context = context;
     }
     
     [HttpGet]

@@ -17,12 +17,12 @@ public class MovieRepository : IMovieRepository{
     }
 
     public async Task<List<Movie>> GetAllAsync(){
-        return await _context.Movies.ToListAsync();
+        return await _context.Movies.Include(m=>m.Genre).ToListAsync();
         // Include(c => c.Comments).
     }
 
     public async Task<Movie?> GetByIdAsync(int id){
-        return await _context.Movies.FirstOrDefaultAsync(c => c.Id == id);
+        return await _context.Movies.Include(m=>m.Genre).FirstOrDefaultAsync(c => c.Id == id);
         // .Include(c => c.Comments)
     }
 

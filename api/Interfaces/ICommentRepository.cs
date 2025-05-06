@@ -1,3 +1,4 @@
+using api.Enums;
 using api.Models;
 using API.Dtos;
 
@@ -5,12 +6,11 @@ namespace api.Interfaces;
 
 public interface ICommentRepository
 {
-    public Task<List<Comment>> GetAllAsync();
-
-    public Task<List<Comment>> GetAllByMovieIdAsync(int movieId);
-    public Task<List<Comment>> GetAllBySeriesIdAsync(int seriesId);
+    public Task<List<Comment>> GetContentCommentsAsync(int contentId, ContentTypeEnum contentTypeEnum);
     public Task<Comment?> GetByIdAsync(int id);
     public Task<Comment> CreateAsync(Comment comment);
     public Task<Comment?> UpdateAsync(int id, CreateCommentRequest commentDto);
-    public Task<Comment?> DeleteAsync(int id);
-} 
+    public Task<Comment?> DeleteAsync(Comment comment);
+}
+
+ 

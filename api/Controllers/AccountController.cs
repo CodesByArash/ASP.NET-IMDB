@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [Route("api/account/")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AccountController: ControllerBase{
 

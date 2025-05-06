@@ -8,17 +8,17 @@ using api.Repository;
 
 namespace api.Controllers;
 
-[Route("api/Series")]
+[Route("api/[controller]")]
 [ApiController]
 public class SeriesController : ControllerBase
 {
 
     private readonly ISeriesRepository _seriesRepository;
-    private readonly ApplicationDBContext _context;
+    private readonly ICommentRepository _commentRepository;
     public SeriesController(ApplicationDBContext context)
     {
         _seriesRepository = new SeriesRepository(context);
-        _context = context;
+        _commentRepository = new CommentRepository(context);
     }
     
     [HttpGet]

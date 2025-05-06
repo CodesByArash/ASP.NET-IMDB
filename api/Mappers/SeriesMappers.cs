@@ -28,7 +28,7 @@ public static class SeriesMappers
             Genre = seriesModel.Genre.ToGenreDto(),
             PosterUrl = seriesModel.PosterUrl,
             Rate = seriesModel.Rate,
-            // Comments = movieModel.Comments.Select(c => c.ToCommentDto()).ToList(),
+            Comments = seriesModel.Comments.Select(c => c.ToCommentDto()).ToList(),
         };
     }
 

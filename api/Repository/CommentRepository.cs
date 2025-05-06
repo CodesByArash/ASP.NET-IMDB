@@ -16,34 +16,6 @@ public class CommentRepository : ICommentRepository
         _context = context;
     }
 
-    public async Task<List<Comment>> GetAllAsync()
-    {
-        return await _context.Comments
-            .Include(c => c.User)
-            .ToListAsync();
-    }
-
-    public async Task<List<Comment>> GetAllBySeriesIdAsync(int seriesId)
-    {
-        return await _context.Comments
-            .Include(c => c.User).Where(c => c.ContentType == ContentTypeEnum.Series && c.ContentId == seriesId)
-            .ToListAsync();
-    }
-
-        public async Task<List<Comment>> GetAllByMovieIdAsync(int movieId)
-    {
-        return await _context.Comments
-            .Include(c => c.User).Where(c => c.ContentType == ContentTypeEnum.Movie && c.ContentId == movieId)
-            .ToListAsync();
-    }
-
-    public async Task<Comment?> GetByIdAsync(int id)
-    {
-        return await _context.Comments
-            .Include(c => c.User)
-            .FirstOrDefaultAsync(c => c.Id == id);
-    }
-
     public async Task<Comment> CreateAsync(Comment comment)
     {
         await _context.Comments.AddAsync(comment);
@@ -66,17 +38,27 @@ public class CommentRepository : ICommentRepository
         return existingComment;
     }
 
-    public async Task<Comment?> DeleteAsync(int id)
+    public async Task<Comment?> DeleteAsync(Comment comment)
     {
-        var comment = await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
-        if (comment == null)
-        {
-            return null;
-        }
-
         _context.Comments.Remove(comment);
         await _context.SaveChangesAsync();
 
         return comment;
     }
+
+    public async Task<List<Comment>> GetContentCommentsAsync(int contentId, ContentTypeEnum contentType)
+    {
+        return await _context.Comments
+            .Where(c => c.ContentId == contentId && c.ContentType == contentType)
+            .Include(c => c.User)
+            .OrderByDescending(c => c.CreatedOn)
+            .ToListAsync();
+    }
+
+    public async Task<Comment?> GetByIdAsync(int id)
+    {
+        return await _context.Comments.Include(c => c.User)
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
 } 
+

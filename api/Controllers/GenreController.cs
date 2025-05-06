@@ -8,17 +8,15 @@ using api.Repository;
 
 namespace api.Controllers;
 
-[Route("api/Genre")]
+[Route("api/[controller]")]
 [ApiController]
 public class GenreController : ControllerBase
 {
 
     private readonly IGenreRepository _genreRepository;
-    private readonly ApplicationDBContext _context;
     public GenreController(ApplicationDBContext context)
     {
         _genreRepository = new GenreRepository(context);
-        _context = context;
     }
     
     [HttpGet]

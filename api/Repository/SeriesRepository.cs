@@ -17,12 +17,12 @@ public class SeriesRepository : ISeriesRepository{
     }
 
     public async Task<List<Series>> GetAllAsync(){
-        return await _context.Series.ToListAsync();
+        return await _context.Series.Include(m=>m.Genre).ToListAsync();
         // Include(c => c.Comments).
     }
 
     public async Task<Series?> GetByIdAsync(int id){
-        return await _context.Series.FirstOrDefaultAsync(s => s.Id == id);
+        return await _context.Series.Include(m=>m.Genre).FirstOrDefaultAsync(s => s.Id == id);
         // .Include(c => c.Comments)
     }
 
