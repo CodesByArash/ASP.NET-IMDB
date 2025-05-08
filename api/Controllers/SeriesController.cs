@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using api.Interfaces;
 using api.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers;
 
@@ -15,10 +16,13 @@ public class SeriesController : ControllerBase
 
     private readonly ISeriesRepository _seriesRepository;
     private readonly ICommentRepository _commentRepository;
+    private readonly IGenreRepository _genreRepository;
+
     public SeriesController(ApplicationDBContext context)
     {
         _seriesRepository = new SeriesRepository(context);
         _commentRepository = new CommentRepository(context);
+        _genreRepository = new GenreRepository(context);
     }
     
     [HttpGet]
@@ -35,19 +39,26 @@ public class SeriesController : ControllerBase
         var series = await _seriesRepository.GetByIdAsync(id);
         if(series == null)
             return NotFound();
+        series.Comments = await _commentRepository.GetContentCommentsAsync(series.Id, Enums.ContentTypeEnum.Series);
         return Ok(series.ToSeriesDetailDto());
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateSeriesRequest seriesDto){
+        var genre =await _genreRepository.GetByIdAsync(seriesDto.GenreId);
+        if (genre == null)
+            return NotFound("Invalid Genre ID");
         var series = seriesDto.ToSeriesModel();
         await _seriesRepository.CreateAsync(series);
-        return CreatedAtAction(nameof(GetDetail), new { id = series.Id }, series.ToSeriesDetailDto());
+        return CreatedAtAction(nameof(GetDetail), new { id = series.Id }, series.ToSeriesDto());
     }
 
     [HttpPut]
     [Route("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateSeriesRequest seriesDto){
+        var genre =await _genreRepository.GetByIdAsync(seriesDto.GenreId);
+        if (genre == null)
+            return NotFound("Invalid Genre ID");
         var seriesModel = await _seriesRepository.UpdateAsync(id, seriesDto);
         if(seriesModel == null)
             return NotFound();

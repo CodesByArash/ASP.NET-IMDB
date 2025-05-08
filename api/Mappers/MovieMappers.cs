@@ -40,6 +40,7 @@ public static class MovieMappers
             ImdbId = movieDto.ImdbId,
             Title = movieDto.Title,
             ReleaseYear = movieDto.ReleaseYear,
+            GenreId = movieDto.GenreId,
             Description = movieDto.Description,
             Duration = movieDto.Duration,
             PosterUrl = movieDto.PosterUrl,
