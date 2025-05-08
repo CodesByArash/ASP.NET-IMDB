@@ -20,17 +20,15 @@ public class CommentRepository : ICommentRepository
     {
         await _context.Comments.AddAsync(comment);
         await _context.SaveChangesAsync();
-        return comment;
+        
+        return await _context.Comments.Include(c => c.User).FirstOrDefaultAsync(c => c.Id == comment.Id);
     }
 
-    public async Task<Comment?> UpdateAsync(int id, CreateCommentRequest commentDto)
+    public async Task<Comment?> UpdateAsync(int id, UpdateCommentRequest commentDto, string userId)
     {
-        var existingComment = await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
-        if (existingComment == null)
-        {
+        var existingComment = await _context.Comments.Include(c => c.User).FirstOrDefaultAsync(x =>x.UserId == userId && x.Id == id);
+        if (existingComment==null)
             return null;
-        }
-
         existingComment.Text = commentDto.Text;
         existingComment.LastUpdatedOn = DateTime.Now;
         await _context.SaveChangesAsync();
@@ -38,12 +36,15 @@ public class CommentRepository : ICommentRepository
         return existingComment;
     }
 
-    public async Task<Comment?> DeleteAsync(Comment comment)
+    public async Task<Comment?> DeleteAsync(int id, string userId)
     {
-        _context.Comments.Remove(comment);
+        var existingComment = await _context.Comments.FirstOrDefaultAsync(x =>x.UserId ==userId && x.Id == id);
+        if (existingComment==null)
+            return null;
+        _context.Comments.Remove(existingComment);
         await _context.SaveChangesAsync();
 
-        return comment;
+        return existingComment;
     }
 
     public async Task<List<Comment>> GetContentCommentsAsync(int contentId, ContentTypeEnum contentType)

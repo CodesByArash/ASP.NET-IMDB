@@ -17,16 +17,12 @@ public static class CommentMappers
         };
     }
 
-    public static Comment ToCmmentModel(this CreateCommentRequest commentDto){
+    public static Comment ToCommentModel(this CreateCommentRequest commentDto){
         return new Comment
         {
             Text = commentDto.Text,
-            UserId = commentDto.UserId,
-            ContentId = commentDto.ContentId,
-            ContentType = commentDto.ContentType,
-            User = commentDto.User,
-            CreatedOn = commentDto.CreatedOn,
-            LastUpdatedOn = commentDto.LastUpdatedOn
+            CreatedOn = DateTime.Now,
+            LastUpdatedOn = DateTime.Now
         };
     }
 }
