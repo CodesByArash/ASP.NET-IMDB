@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using api.Interfaces;
 using api.Repository;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers;
 
@@ -13,7 +14,6 @@ namespace api.Controllers;
 [ApiController]
 public class MovieController : ControllerBase
 {
-
     private readonly IMovieRepository _movieRepository;
     private readonly ICommentRepository _commentRepository;
 
@@ -43,6 +43,7 @@ public class MovieController : ControllerBase
         return Ok(movie.ToMovieDetailDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateMovieRequest movieDto){
         var genre =await _genreRepository.GetByIdAsync(movieDto.GenreId);
@@ -53,6 +54,7 @@ public class MovieController : ControllerBase
         return CreatedAtAction(nameof(GetDetail), new { id = movie.Id }, movie.ToMovieDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     [Route("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateMovieRequest movieDto){
@@ -65,6 +67,7 @@ public class MovieController : ControllerBase
         return Ok(movieModel.ToMovieDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete]
     [Route("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id ){
