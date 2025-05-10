@@ -17,13 +17,22 @@ public class TokenService : ITokenService{
         
     }
 
-    public string CreateToken(AppUser user)
+    public string CreateToken(AppUser user, IList<string> roles)
     {
         var claims = new List<Claim>
         {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // اضافه شد
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
         };
+
+        foreach (var role in roles)
+        {
+            Console.WriteLine("--------------------------------");
+            Console.WriteLine(role);
+            Console.WriteLine("--------------------------------");
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
 
         var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 

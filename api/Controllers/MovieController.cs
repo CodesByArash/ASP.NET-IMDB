@@ -43,7 +43,7 @@ public class MovieController : ControllerBase
         return Ok(movie.ToMovieDetailDto());
     }
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateMovieRequest movieDto){
         var genre =await _genreRepository.GetByIdAsync(movieDto.GenreId);
@@ -54,7 +54,7 @@ public class MovieController : ControllerBase
         return CreatedAtAction(nameof(GetDetail), new { id = movie.Id }, movie.ToMovieDto());
     }
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpPut]
     [Route("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateMovieRequest movieDto){
@@ -67,7 +67,7 @@ public class MovieController : ControllerBase
         return Ok(movieModel.ToMovieDto());
     }
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpDelete]
     [Route("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id ){
