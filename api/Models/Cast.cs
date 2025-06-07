@@ -11,8 +11,9 @@ namespace api.Models
         public int Id { get; set; }
         public int ContentId { get; set; }
         public ContentTypeEnum ContentType { get; set; }
-        public int PersonId { get; set; } 
-        public CastRole Role { get; set; }  
-        public required Person Person { get; set; }
+        public int PersonId { get; set; }
+        public CastRole Role { get; set; }
+        public Person Person { get; set; }
     }
 }
+
