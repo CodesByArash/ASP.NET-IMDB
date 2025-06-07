@@ -52,3 +52,5 @@ Migrations/
 .env
 .env.local
 .env.*.local
+
+/data
