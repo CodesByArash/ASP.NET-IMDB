@@ -1,0 +1,34 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+      - ./sql-init:/sql-init
+    networks:
+      - mynetwork
+
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+    - ConnectionStrings__DefaultConnection=Server=db;Database=IMDB;User Id=sa;Password=YourStrong!Passw0rd;Encrypt=False;TrustServerCertificate=True;
+    ports:
+      - "5000:80"
+    networks:
+      - mynetwork
+
+volumes:
+  sqlserverdata:
+
+networks:
+  mynetwork:
+
