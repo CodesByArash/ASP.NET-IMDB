@@ -7,6 +7,7 @@ using api.Interfaces;
 using api.Repository;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
+using api.Mappers;
 
 namespace api.Controllers;
 

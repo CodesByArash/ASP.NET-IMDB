@@ -1,4 +1,5 @@
 using api.Data;
+using api.Enums;
 using api.Interfaces;
 using api.Models;
 using API.Dtos;
@@ -55,10 +56,20 @@ public class MovieRepository : IMovieRepository{
         if(movie == null){
             return null;
         }
+
+        var comments = await _context.Comments.Where(c => c.ContentId == id && c.ContentType == ContentTypeEnum.Movie).ToListAsync();
+        var rates = await _context.Rates.Where(r => r.ContentId == id && r.ContentType == ContentTypeEnum.Movie).ToListAsync();
+        var cast = await _context.Cast.Where(c => c.ContentId == id && c.ContentType == ContentTypeEnum.Movie).ToListAsync();
+
+
+        _context.Cast.RemoveRange(cast);
+        _context.Comments.RemoveRange(comments);
+        _context.Rates.RemoveRange(rates);
+
         _context.Movies.Remove(movie);
+
         await _context.SaveChangesAsync();
 
         return movie;
     }
-
 }

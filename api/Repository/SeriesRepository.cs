@@ -1,4 +1,5 @@
 using api.Data;
+using api.Enums;
 using api.Interfaces;
 using api.Models;
 using API.Dtos;
@@ -54,10 +55,21 @@ public class SeriesRepository : ISeriesRepository{
         if(series == null){
             return null;
         }
+
+
+        var comments = await _context.Comments.Where(c => c.ContentId == id && c.ContentType == ContentTypeEnum.Series).ToListAsync();
+        var rates = await _context.Rates.Where(r => r.ContentId == id && r.ContentType == ContentTypeEnum.Series).ToListAsync();
+        var cast = await _context.Cast.Where(c => c.ContentId == id && c.ContentType == ContentTypeEnum.Series).ToListAsync();
+
+
+        _context.Cast.RemoveRange(cast);
+        _context.Comments.RemoveRange(comments);
+        _context.Rates.RemoveRange(rates);
+
+
         _context.Series.Remove(series);
         await _context.SaveChangesAsync();
 
         return series;
     }
-
 }

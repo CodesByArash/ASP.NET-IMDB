@@ -35,6 +35,7 @@ public class PersonRepository : IPersonRepository{
         if (existingPerson == null){
             return null;
         }
+        
         existingPerson.BirthDate = personDto.BirthDate;
         existingPerson.Bio = personDto.Bio;
         existingPerson.PhotoUrl = personDto.PhotoUrl;
@@ -56,5 +57,4 @@ public class PersonRepository : IPersonRepository{
 
         return person;
     }
-
 }

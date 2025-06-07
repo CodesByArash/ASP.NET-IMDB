@@ -13,7 +13,7 @@ namespace api.Models
         public required string ImdbId { get; set; }
         public required string Title { get; set; }
         public int ReleaseYear { get; set; }
-        public  required string Description { get; set; }
+        public required string Description { get; set; }
         public int Duration { get; set; }
         public int GenreId { get; set; }
         public Genre Genre { get; set; }
@@ -23,5 +23,7 @@ namespace api.Models
         public ICollection<Cast> Cast { get; set; }
         [NotMapped]
         public ICollection<Comment> Comments { get; set; }
+        [NotMapped]
+        public ICollection<Rate> Rates { get; set; }
     }
 }

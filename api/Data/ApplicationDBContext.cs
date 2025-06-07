@@ -18,12 +18,12 @@ public class ApplicationDBContext : IdentityDbContext<AppUser>
     public DbSet<Rate> Rates { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Genre> Genres { get; set; }
-
+    public DbSet<Cast> Cast { get; set; }
 
     public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContextOptions)
         : base(dbContextOptions)
     {
-        
+
     }
 
 
@@ -103,6 +103,5 @@ public class ApplicationDBContext : IdentityDbContext<AppUser>
         modelBuilder.Entity<Comment>()
             .Property(c => c.ContentType)
             .HasConversion<string>();
-
     }
 }
