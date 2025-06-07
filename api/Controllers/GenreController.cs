@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using api.Interfaces;
 using api.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers;
 
@@ -36,6 +37,7 @@ public class GenreController : ControllerBase
         return Ok(genre.ToGenreDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateGenreRequest genreDto){
         var genre = genreDto.ToGenreModel();
@@ -43,6 +45,7 @@ public class GenreController : ControllerBase
         return CreatedAtAction(nameof(GetDetail), new { id = genre.Id }, genre.ToGenreDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     [Route("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateGenreRequest genreDto){
@@ -52,6 +55,7 @@ public class GenreController : ControllerBase
         return Ok(genreModel.ToGenreDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete]
     [Route("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id ){

@@ -1,9 +1,13 @@
 using api.Models;
 using API.Dtos;
 
+
+namespace api.Mappers;
+
 public static class MovieMappers
 {
-    public static MovieDto ToMovieDto(this Movie movieModel){
+    public static MovieDto ToMovieDto(this Movie movieModel)
+    {
         return new MovieDto
         {
             Id = movieModel.Id,
@@ -18,7 +22,8 @@ public static class MovieMappers
         };
     }
 
-        public static MovieDetailDto ToMovieDetailDto(this Movie movieModel){
+    public static MovieDetailDto ToMovieDetailDto(this Movie movieModel)
+    {
         return new MovieDetailDto
         {
             Id = movieModel.Id,
@@ -34,7 +39,8 @@ public static class MovieMappers
         };
     }
 
-    public static Movie ToMovieModel(this CreateMovieRequest movieDto){
+    public static Movie ToMovieModel(this CreateMovieRequest movieDto)
+    {
         return new Movie
         {
             ImdbId = movieDto.ImdbId,

@@ -1,9 +1,11 @@
 using api.Models;
 using API.Dtos;
 
+namespace api.Mappers;
 public static class CommentMappers
 {
-    public static CommentDto ToCommentDto(this Comment commentModel){
+    public static CommentDto ToCommentDto(this Comment commentModel)
+    {
         return new CommentDto
         {
             Id = commentModel.Id,
@@ -17,7 +19,8 @@ public static class CommentMappers
         };
     }
 
-    public static Comment ToCommentModel(this CreateCommentRequest commentDto){
+    public static Comment ToCommentModel(this CreateCommentRequest commentDto)
+    {
         return new Comment
         {
             Text = commentDto.Text,

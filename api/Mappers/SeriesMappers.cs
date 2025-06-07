@@ -1,9 +1,13 @@
 using api.Models;
 using API.Dtos;
 
+
+namespace api.Mappers;
+
 public static class SeriesMappers
 {
-    public static SeriesDto ToSeriesDto(this Series seriesModel){
+    public static SeriesDto ToSeriesDto(this Series seriesModel)
+    {
         return new SeriesDto
         {
             Id = seriesModel.Id,
@@ -17,7 +21,8 @@ public static class SeriesMappers
         };
     }
 
-        public static SeriesDetailDto ToSeriesDetailDto(this Series seriesModel){
+    public static SeriesDetailDto ToSeriesDetailDto(this Series seriesModel)
+    {
         return new SeriesDetailDto
         {
             Id = seriesModel.Id,
@@ -32,7 +37,8 @@ public static class SeriesMappers
         };
     }
 
-    public static Series ToSeriesModel(this CreateSeriesRequest seriesDto){
+    public static Series ToSeriesModel(this CreateSeriesRequest seriesDto)
+    {
         return new Series
         {
             ImdbId = seriesDto.ImdbId,

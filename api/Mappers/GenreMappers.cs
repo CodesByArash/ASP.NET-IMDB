@@ -1,9 +1,12 @@
 using api.Models;
 using API.Dtos;
 
+namespace api.Mappers;
+
 public static class GenreMappers
 {
-    public static GenreDto ToGenreDto(this Genre genreModel){
+    public static GenreDto ToGenreDto(this Genre genreModel)
+    {
         return new GenreDto
         {
             Id = genreModel.Id,
@@ -11,7 +14,8 @@ public static class GenreMappers
         };
     }
 
-    public static Genre ToGenreModel(this CreateGenreRequest genreDto){
+    public static Genre ToGenreModel(this CreateGenreRequest genreDto)
+    {
         return new Genre
         {
             Title = genreDto.Title,

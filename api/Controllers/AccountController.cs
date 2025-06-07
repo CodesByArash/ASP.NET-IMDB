@@ -58,27 +58,31 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto){
-            if(!ModelState.IsValid){
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName.ToLower());
 
             if (user == null)
-                return Unauthorized("Invalid UserName!");
+                return NotFound("Invalid UserName!");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-            
-            if(!result.Succeeded){
-                return Unauthorized("Username not found and or password incorrect");
+
+            if (!result.Succeeded)
+            {
+                return Unauthorized("Invalid Credentials incorrect");
             }
             var roles = await _userManager.GetRolesAsync(user);
-            return Ok(new NewUserDto{
+            return Ok(new NewUserDto
+            {
                 UserName = user.UserName,
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user, roles),
-                });
+            });
         }
     }
 }

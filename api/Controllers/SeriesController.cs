@@ -24,7 +24,8 @@ public class SeriesController : ControllerBase
         _commentRepository = new CommentRepository(context);
         _genreRepository = new GenreRepository(context);
     }
-    
+
+
     [HttpGet]
     public async Task<IActionResult> GetList()
     {
@@ -33,19 +34,23 @@ public class SeriesController : ControllerBase
         return Ok(seriesDto);
     }
 
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetDetail([FromRoute] int id)
     {
         var series = await _seriesRepository.GetByIdAsync(id);
-        if(series == null)
+        if (series == null)
             return NotFound();
         series.Comments = await _commentRepository.GetContentCommentsAsync(series.Id, Enums.ContentTypeEnum.Series);
         return Ok(series.ToSeriesDetailDto());
     }
 
+
+    [Authorize(Roles = "Admin")]
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateSeriesRequest seriesDto){
-        var genre =await _genreRepository.GetByIdAsync(seriesDto.GenreId);
+    public async Task<IActionResult> Create([FromBody] CreateSeriesRequest seriesDto)
+    {
+        var genre = await _genreRepository.GetByIdAsync(seriesDto.GenreId);
         if (genre == null)
             return NotFound("Invalid Genre ID");
         var series = seriesDto.ToSeriesModel();
@@ -53,24 +58,31 @@ public class SeriesController : ControllerBase
         return CreatedAtAction(nameof(GetDetail), new { id = series.Id }, series.ToSeriesDto());
     }
 
+
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     [Route("{id}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateSeriesRequest seriesDto){
-        var genre =await _genreRepository.GetByIdAsync(seriesDto.GenreId);
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateSeriesRequest seriesDto)
+    {
+        var genre = await _genreRepository.GetByIdAsync(seriesDto.GenreId);
         if (genre == null)
             return NotFound("Invalid Genre ID");
         var seriesModel = await _seriesRepository.UpdateAsync(id, seriesDto);
-        if(seriesModel == null)
+        if (seriesModel == null)
             return NotFound();
         return Ok(seriesModel.ToSeriesDetailDto());
     }
 
+
+    [Authorize(Roles = "Admin")]
     [HttpDelete]
     [Route("{id}")]
-    public async Task<IActionResult> Delete([FromRoute] int id ){
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
         var seriesModel = await _seriesRepository.DeleteAsync(id);
         if (seriesModel == null)
             return NotFound();
         return Ok(seriesModel.ToSeriesDto());
     }
 }
+
