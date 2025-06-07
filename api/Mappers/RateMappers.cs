@@ -27,9 +27,4 @@ public static class RateMappers
             Score = rateDto.Score,
         };
     }
-
-    public static void UpdateRateModel(this Rate rateModel, UpdateRateDto rateDto)
-    {
-        rateModel.Score = rateDto.Score;
-    }
 } 
