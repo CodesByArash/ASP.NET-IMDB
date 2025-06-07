@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using api.Utils;
+using api.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
