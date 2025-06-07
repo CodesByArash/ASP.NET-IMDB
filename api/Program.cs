@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using api.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -116,39 +116,8 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
-    await SeedAdminUser(serviceProvider);
+    await Utils.SeedAdminUser(serviceProvider);
 }
 
 app.Run();
 
-
-async Task SeedAdminUser(IServiceProvider serviceProvider)
-{
-    var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
-    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-    var adminEmail = "admin@example.com";
-    var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-    if (adminUser == null)
-    {
-        var newAdmin = new AppUser
-        {
-            UserName = "admin",
-            Email = adminEmail
-        };
-
-        var result = await userManager.CreateAsync(newAdmin, "Admin@123");
-
-        if (result.Succeeded)
-        {
-            // حتما باید قبلش رول "Admin" ساخته شده باشد
-            if (!await roleManager.RoleExistsAsync("Admin"))
-            {
-                await roleManager.CreateAsync(new IdentityRole("Admin"));
-            }
-
-            await userManager.AddToRoleAsync(newAdmin, "Admin");
-        }
-    }
-}
