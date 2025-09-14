@@ -10,20 +10,17 @@ public static class RateMappers
         return new RateDto
         {
             Id = rateModel.Id,
-            ContentId = rateModel.ContentId,
-            ContentType = rateModel.ContentType,
+            MediaId = rateModel.MediaId,
             UserId = rateModel.UserId,
             UserName = rateModel.User.UserName,
             Score = rateModel.Score
         };
     }
 
-    public static Rate ToRateModel(this CreateRateDto rateDto)
+    public static Rate ToRateModel(this RateRequestDto rateDto)
     {
         return new Rate
         {
-            ContentId = rateDto.ContentId,
-            ContentType = rateDto.ContentType,
             Score = rateDto.Score,
         };
     }

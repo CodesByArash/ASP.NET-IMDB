@@ -9,7 +9,7 @@ public class CommentDto
     public int ContentId { get; set; }
     public ContentTypeEnum ContentType { get; set; }
     public string UserId { get; set; } = string.Empty;
-    public string UserName { get; set; } = string.Empty;
+    public string? UserName { get; set; } = string.Empty;
     public DateTime CreatedOn { get; set; }
     public DateTime LastUpdatedOn { get; set; }
 }

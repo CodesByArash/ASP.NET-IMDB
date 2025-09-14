@@ -1,12 +1,12 @@
 using api.Models;
 using api.Interfaces;
-using API.Dtos.Account;
+using api.Dtos.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using api.Dtos.Account;
 using Microsoft.EntityFrameworkCore;
+using api.Helpers;
 
-namespace API.Controllers
+namespace api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -31,25 +31,26 @@ namespace API.Controllers
                     UserName = registerDto.Username,
                     Email = registerDto.EmailAddress
                 };
-                var createUser = await _userManager.CreateAsync(appUser, registerDto.Password);
+                var createUser = await _userManager.CreateAsync(appUser, registerDto.Password!);
                 if (createUser.Succeeded){
                     var roleResult  = await _userManager.AddToRoleAsync(appUser, "User");
                     if (roleResult.Succeeded){
                         var roles = await _userManager.GetRolesAsync(appUser);
-                        return Ok(
+                        return ApiResponse.Success(
                             new NewUserDto{
-                                UserName = appUser.UserName,
-                                Email = appUser.Email,
+                                UserName = appUser.UserName!,
+                                Email = appUser.Email!,
                                 Token = _tokenService.CreateToken(appUser, roles)
-                            }
+                            },
+                            "User registered successfully"
                         );
                     }
                     else{
-                        return StatusCode(500, roleResult.Errors);
+                        return ApiResponse.Error("Failed to assign role to user", 500);
                     }
                 }
                 else{
-                    return StatusCode(500, createUser.Errors);
+                    return ApiResponse.Error("Failed to create user", 500);
                 }
             }
             catch(Exception ex){
@@ -68,21 +69,21 @@ namespace API.Controllers
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName.ToLower());
 
             if (user == null)
-                return NotFound("Invalid UserName!");
+                return ApiResponse.NotFound("Invalid UserName!");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
             if (!result.Succeeded)
             {
-                return Unauthorized("Invalid Credentials incorrect");
+                return ApiResponse.Unauthorized("Invalid Credentials");
             }
             var roles = await _userManager.GetRolesAsync(user);
-            return Ok(new NewUserDto
+            return ApiResponse.Success(new NewUserDto
             {
-                UserName = user.UserName,
-                Email = user.Email,
+                UserName = user.UserName!,
+                Email = user.Email!,
                 Token = _tokenService.CreateToken(user, roles),
-            });
+            }, "Login successful");
         }
     }
 }

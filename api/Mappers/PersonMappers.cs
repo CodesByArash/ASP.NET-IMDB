@@ -5,9 +5,9 @@ namespace api.Mappers;
 
 public static class PersonMapper
 {
-    public static PersonDisplayDto ToPersonDisplayDto(this Person person)
+    public static PersonDto ToPersonDisplayDto(this Person person)
     {
-        return new PersonDisplayDto
+        return new PersonDto
         {
             Id = person.Id,
             ImdbId = person.ImdbId,
@@ -17,9 +17,9 @@ public static class PersonMapper
         };
     }
 
-    public static PersonDetailDto ToPersonDetailDto(this Person person)
+    public static PersonDto ToPersonDetailDto(this Person person)
     {
-        return new PersonDetailDto
+        return new PersonDto
         {
             Id = person.Id,
             ImdbId = person.ImdbId,
@@ -30,7 +30,7 @@ public static class PersonMapper
         };
     }
 
-    public static Person ToPersonModel(this PersonCreateDto dto)
+    public static Person ToPersonModel(this PersonRequestDto dto)
     {
         return new Person
         {

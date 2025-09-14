@@ -1,3 +1,4 @@
+using api.Dtos;
 using api.Models;
 using API.Dtos;
 
@@ -13,41 +14,26 @@ public static class SeriesMappers
             Id = seriesModel.Id,
             ImdbId = seriesModel.ImdbId,
             Title = seriesModel.Title,
-            ReleaseYear = seriesModel.ReleaseYear,
+            ReleaseDate = seriesModel.ReleaseDate,
             Description = seriesModel.Description,
-            Genre = seriesModel.Genre.ToGenreDto(),
+            Genres = seriesModel.Genres.Select(g => g.ToGenreDto()).ToList(),
             PosterUrl = seriesModel.PosterUrl,
             Rate = seriesModel.Rate,
         };
     }
-
-    public static SeriesDetailDto ToSeriesDetailDto(this Series seriesModel)
-    {
-        return new SeriesDetailDto
-        {
-            Id = seriesModel.Id,
-            ImdbId = seriesModel.ImdbId,
-            Title = seriesModel.Title,
-            ReleaseYear = seriesModel.ReleaseYear,
-            Description = seriesModel.Description,
-            Genre = seriesModel.Genre.ToGenreDto(),
-            PosterUrl = seriesModel.PosterUrl,
-            Rate = seriesModel.Rate,
-            Comments = seriesModel.Comments.Select(c => c.ToCommentDto()).ToList(),
-        };
-    }
-
-    public static Series ToSeriesModel(this CreateSeriesRequest seriesDto)
+    
+    public static Series ToSeriesModel(this SeriesRequestDto seriesDto)
     {
         return new Series
         {
             ImdbId = seriesDto.ImdbId,
             Title = seriesDto.Title,
-            ReleaseYear = seriesDto.ReleaseYear,
+            ReleaseDate = seriesDto.ReleaseDate,
             Description = seriesDto.Description,
-            GenreId = seriesDto.GenreId,
+            // Genres = seriesDto.GenreIds,
             PosterUrl = seriesDto.PosterUrl,
             Rate = seriesDto.Rate,
         };
     }
+
 }

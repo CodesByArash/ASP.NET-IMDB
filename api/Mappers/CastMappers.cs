@@ -1,29 +1,29 @@
 using api.Dtos;
+using api.Dtos.Cast;
+using api.Interfaces;
 using api.Models;
 
 namespace api.Mappers;
 
 public static class CastMappers
 {
-    public static CastDto ToCastDto(this Cast castModel)
+    public static CastDto ToDto(this Cast castModel)
     {
         return new CastDto
         {
             Id = castModel.Id,
-            ContentId = castModel.ContentId,
-            ContentType = castModel.ContentType,
+            MediaId = castModel.MediaId,
             PersonId = castModel.PersonId,
             Role = castModel.Role,
             Person = castModel.Person.ToPersonDisplayDto()
         };
     }
 
-    public static Cast ToCastModel(this CreateCastRequest castDto)
+    public static Cast ToModel(this CastRequestDto castDto)
     {
         return new Cast
         {
-            ContentId = castDto.ContentId,
-            ContentType = castDto.ContentType,
+            MediaId = castDto.MediaId,
             PersonId = castDto.PersonId,
             Role = castDto.Role
         };

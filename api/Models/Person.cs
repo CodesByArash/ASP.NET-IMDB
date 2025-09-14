@@ -3,13 +3,13 @@
 namespace api.Models;
 
 
-    public class Person
+    public class Person : IEntity
     {
         public int Id { get; set; }
-        public required string ImdbId { get; set; }
-        public required string FullName { get; set; }
+        public string ImdbId { get; set; }
+        public string FullName { get; set; }
         public DateTime BirthDate { get; set; }
-        public required string Bio { get; set; }
-        public required string PhotoUrl { get; set; }
+        public string Bio { get; set; }
+        public string PhotoUrl { get; set; }
         public ICollection<Cast> Cast { get; set; }
     }

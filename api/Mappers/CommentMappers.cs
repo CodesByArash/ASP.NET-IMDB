@@ -11,21 +11,19 @@ public static class CommentMappers
             Id = commentModel.Id,
             Text = commentModel.Text,
             UserId = commentModel.UserId,
-            ContentId = commentModel.ContentId,
-            ContentType = commentModel.ContentType,
-            UserName = commentModel.User.UserName,
+            ContentId = commentModel.MediaId,
+            UserName = commentModel.User?.UserName,
             CreatedOn = commentModel.CreatedOn,
             LastUpdatedOn = commentModel.LastUpdatedOn
         };
     }
 
-    public static Comment ToCommentModel(this CreateCommentRequest commentDto)
+    public static Comment ToCommentModel(this CommentRequestDto commentDto)
     {
         return new Comment
         {
             Text = commentDto.Text,
-            CreatedOn = DateTime.Now,
-            LastUpdatedOn = DateTime.Now
+            LastUpdatedOn = DateTime.UtcNow
         };
     }
 }

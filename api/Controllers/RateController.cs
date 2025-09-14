@@ -7,106 +7,120 @@ using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using api.Repository;
-using API.Dtos;
+using api.Interfaces.IRepositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using api.Helpers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class RateController : ControllerBase
 {
     private readonly IRateRepository _rateRepository;
-    private readonly IMovieRepository _movieRepository;
-    private readonly ISeriesRepository _seriesRepository;
-
-    public RateController(ApplicationDBContext context)
+    private readonly IMediaRepository _mediaRepository;
+    public RateController(IRateRepository rateRepository, IMediaRepository mediaRepository)
     {
-        _rateRepository = new RateRepository(context);
-        _movieRepository = new MovieRepository(context);
-        _seriesRepository = new SeriesRepository(context);
+        _rateRepository = rateRepository;
+        _mediaRepository = mediaRepository;
+    }
+    [HttpGet("media/{mediaId}")]
+    public async Task<IActionResult> GetMovieRates([FromRoute] int mediaId)
+    {
+        try
+        {
+            var rates = await _rateRepository.GetMediaRatesAsync(mediaId);
+            var rateDtos = rates.Select(r => r.ToRateDto());
+            return ApiResponse.Success(rateDtos, "Rates retrieved successfully");
+        }
+        catch (Exception ex)
+        {
+            return ApiResponse.Error("Failed to retrieve rates", 500);
+        }
     }
 
     [Authorize]
-    [HttpPost("movie/{movieId}")]
-    public async Task<IActionResult> AddMovieRate([FromRoute] int movieId, [FromBody] CreateRateDto rateDto)
-    {      
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if(userId == null)
-            return BadRequest("Invalid Credentials");
-        var movie = await _movieRepository.GetByIdAsync(movieId);
-        if (movie == null)
-            return NotFound("Movie Not Found");
-        var rate = RateMappers.ToRateModel(rateDto);
-        rate.UserId = userId;
-        rate.ContentId = movieId;
-        rate.ContentType = ContentTypeEnum.Movie;
-        var createdRate = await _rateRepository.CreateAsync(rate);
-
-        return Ok(createdRate.ToRateDto());
-    }
-
-    [Authorize]
-    [HttpPost("series/{seriesId}")]
-    public async Task<IActionResult> AddSeriesRate([FromRoute] int seriesId, [FromBody] CreateRateDto rateDto)
+    [HttpPost("media/{mediaId}")]
+    public async Task<IActionResult> AddMediaRate([FromRoute] int mediaId, [FromBody] RateRequestDto rateDto)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if(userId == null)
-            return BadRequest("Invalid Credentials");
-        var series = await _seriesRepository.GetByIdAsync(seriesId);
-        if (series == null)
-            return NotFound("Series Not Found");
-        var rate = RateMappers.ToRateModel(rateDto);
-        rate.UserId = userId;
-        rate.ContentId = seriesId;
-        rate.ContentType = ContentTypeEnum.Series;
-        var createdRate = await _rateRepository.CreateAsync(rate);
-        
-        return Ok(createdRate.ToRateDto());
-    }
-
-    [HttpGet("movie/{movieId}")]
-    public async Task<IActionResult> GetMovieRates([FromRoute] int movieId)
-    {
-        var rates = await _rateRepository.GetContentRatesAsync(movieId, api.Enums.ContentTypeEnum.Movie);
-        var rateDtos = rates.Select(r => r.ToRateDto());
-        return Ok(rateDtos);
-    }
-
-    [HttpGet("series/{seriesId}")]
-    public async Task<IActionResult> GetSeriesRates([FromRoute]  int seriesId)
-    {
-        var rates = await _rateRepository.GetContentRatesAsync(seriesId, api.Enums.ContentTypeEnum.Series);
-        var rateDtos = rates.Select(r => r.ToRateDto());
-        return Ok(rateDtos);
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if(userId == null)
+                return ApiResponse.BadRequest("Invalid Credentials");
+            
+            var media = await _mediaRepository.GetByIdAsync(mediaId);
+            if (media == null)
+                return ApiResponse.NotFound("Media Not Found");
+            
+            var rate = rateDto.ToRateModel();
+            rate.UserId = userId;
+            rate.MediaId = mediaId;
+            var createdRate = await _rateRepository.AddAsync(rate);
+            if (createdRate == null)
+            {
+                return ApiResponse.Error("Failed to create rate", 500);
+            }
+            return ApiResponse.Success(createdRate.ToRateDto(), "Rate added successfully");
+        }
+        catch (Exception ex)
+        {
+            return ApiResponse.Error("Failed to add rate", 500);
+        }
     }
 
     [Authorize]
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateRate(int id, [FromBody] UpdateRateDto rateDto)
+    public async Task<IActionResult> UpdateRate(int id, [FromBody] RateRequestDto rateDto)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if(userId == null)
-            return BadRequest("Invalid Credentials");
-
-        var rate = await _rateRepository.UpdateAsync(id, rateDto, userId);
-        if (rate == null)
-            return NotFound("Rate Not Found");
-
-        return Ok(rate.ToRateDto());
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if(userId == null)
+                return ApiResponse.Unauthorized("Invalid Credentials");
+            
+            var rate = await _rateRepository.GetByIdAsync(id);
+            if(rate == null)
+                return ApiResponse.NotFound("Rate Not Found");
+            
+            var isAllowed = rate.UserId == userId;
+            if (!isAllowed)
+                return ApiResponse.Unauthorized("Invalid Credentials");
+            
+            rate.Score = rateDto.Score;
+            rate.LastUpdatedOn = DateTime.UtcNow;
+            var updatedRate = await _rateRepository.UpdateAsync(rate);
+            if (updatedRate == null)
+                return ApiResponse.NotFound("Rate Not Found");
+            
+            return ApiResponse.Success(rate.ToRateDto(), "Rate updated successfully");
+        }
+        catch (Exception ex)
+        {
+            return ApiResponse.Error("Failed to update rate", 500);
+        }
     }
 
     [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteRate(int id)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if(userId == null)
-            return BadRequest("Invalid Credentials");
-
-        var rate =  await _rateRepository.DeleteAsync(id, userId);
-        if (rate == null)
-            return NotFound("rate Not Found");
-        return Ok(rate);
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if(userId == null)
+                return ApiResponse.BadRequest("Invalid Credentials");
+            
+            var rate = new Rate() { Id = id };
+            var isRemoved = await _rateRepository.DeleteAsync(rate);
+            if (!isRemoved)
+                return ApiResponse.NotFound("Rate Not Found or Could not be Updated");
+            
+            return ApiResponse.Success(isRemoved, "Rate deleted successfully");
+        }
+        catch (Exception ex)
+        {
+            return ApiResponse.Error("Failed to delete rate", 500);
+        }
     }
 }
 

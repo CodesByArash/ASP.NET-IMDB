@@ -6,11 +6,10 @@ using api.Enums;
 
 namespace api.Models
 {
-    public class Cast
+    public class Cast : IEntity
     {
         public int Id { get; set; }
-        public int ContentId { get; set; }
-        public ContentTypeEnum ContentType { get; set; }
+        public int MediaId { get; set; }
         public int PersonId { get; set; }
         public CastRole Role { get; set; }
         public Person Person { get; set; }
