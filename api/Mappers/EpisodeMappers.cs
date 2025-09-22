@@ -18,7 +18,7 @@ public static class EpisodeMappers
             EpisodeNumber = episodeModel.EpisodeNumber,
             DurationMinutes = episodeModel.DurationMinutes,
             SeasonId = episodeModel.SeasonId,
-            Season = episodeModel.Season?.ToSeasonDto(),
+            // Season = episodeModel.Season?.ToSeasonDto(),
             PosterUrl = episodeModel.PosterUrl,
             Rate = episodeModel.Rate,
         };
