@@ -34,7 +34,7 @@ public class TokenService : ITokenService{
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+        var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor{
             Subject = new ClaimsIdentity(claims),
