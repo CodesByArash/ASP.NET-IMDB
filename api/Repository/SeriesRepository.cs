@@ -45,26 +45,35 @@ public class SeriesRepository(ApplicationDbContext context) : Repository<Series>
     //     return existingSeries;
     // }
 
-    // public async Task<Series?> DeleteAsync(int id ){
-    //     var series = await _context.Series.FirstOrDefaultAsync(s => s.Id == id);
-    //     if(series == null){
-    //         return null;
-    //     }
-    //
-    //
-    //     var comments = await _context.Comments.Where(c => c.ContentId == id && c.ContentType == ContentTypeEnum.Series).ToListAsync();
-    //     var rates = await _context.Rates.Where(r => r.ContentId == id && r.ContentType == ContentTypeEnum.Series).ToListAsync();
-    //     var cast = await _context.Cast.Where(c => c.ContentId == id && c.ContentType == ContentTypeEnum.Series).ToListAsync();
-    //
-    //
-    //     _context.Cast.RemoveRange(cast);
-    //     _context.Comments.RemoveRange(comments);
-    //     _context.Rates.RemoveRange(rates);
-    //
-    //
-    //     _context.Series.Remove(series);
-    //     await _context.SaveChangesAsync();
-    //
-    //     return series;
-    // }
+    public override async Task<bool> DeleteAsync(Series series)
+    {
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+
+        try
+        {
+            var entity = await _context.Series
+                .Include(s => s.Seasons)
+                .ThenInclude(se => se.Episodes)
+                .FirstOrDefaultAsync(s => s.Id == series.Id);
+
+            if (entity == null) return false;
+
+            var allEpisodes = entity.Seasons.SelectMany(se => se.Episodes).ToList();
+            if (allEpisodes.Any()) _context.Episodes.RemoveRange(allEpisodes);
+
+            if (entity.Seasons.Any()) _context.Seasons.RemoveRange(entity.Seasons);
+
+            _context.Series.Remove(entity);
+
+            var affected = await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return affected > 0;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
 }

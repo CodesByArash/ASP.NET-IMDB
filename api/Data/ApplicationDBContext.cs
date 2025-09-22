@@ -41,13 +41,17 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbConte
         base.OnModelCreating(modelBuilder);
         
         modelBuilder.Entity<Media>().ToTable("Media");
-        modelBuilder.Entity<Movie>().ToTable("Movies");
+        modelBuilder.Entity<Movie>().ToTable("Movies"); 
         modelBuilder.Entity<Series>().ToTable("Series");
         modelBuilder.Entity<Season>().ToTable("Seasons");
         modelBuilder.Entity<Episode>().ToTable("Episodes");
+        modelBuilder.Entity<Rate>().ToTable("Rates");
+        modelBuilder.Entity<Cast>().ToTable("Cast");
+        modelBuilder.Entity<Genre>().ToTable("Genres");
+        modelBuilder.Entity<Person>().ToTable("People");
+        modelBuilder.Entity<Comment>().ToTable("Comments");
         modelBuilder.Entity<IdentityRole>().HasData(roles);
-
-
+        
         modelBuilder.Entity<AppUser>()
             .HasIndex(u => u.UserName)
             .IsUnique();
@@ -113,13 +117,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbConte
             .WithMany(sr => sr.Seasons)
             .HasForeignKey(s => s.SeriesId)
             .OnDelete(DeleteBehavior.Restrict);
-
+        
         modelBuilder.Entity<Episode>()
             .HasOne(e => e.Season)
             .WithMany(s => s.Episodes)
             .HasForeignKey(e => e.SeasonId)
             .OnDelete(DeleteBehavior.Restrict);
-
+        
         modelBuilder.Entity<Cast>()
             .Property(c => c.Role)
             .HasConversion<string>();

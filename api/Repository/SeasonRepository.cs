@@ -39,4 +39,38 @@ public class SeasonRepository(ApplicationDbContext context) : Repository<Season>
             .FirstOrDefaultAsync(s => s.Id == season.Id);
         return affected > 0 ? entity : null;
     }
+    public override async Task<bool> DeleteAsync(Season season)
+    {
+        // باز کردن تراکنش
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+
+        try
+        {
+            // پیدا کردن اپیزودها
+            var episodes = await _context.Episodes
+                .Where(e => e.SeasonId == season.Id)
+                .ToListAsync();
+
+            if (episodes.Any())
+                _context.Episodes.RemoveRange(episodes);
+
+            // پیدا کردن فصل (ممکنه قبلا پاک شده باشه)
+            var entity = await _context.Seasons
+                .FirstOrDefaultAsync(s => s.Id == season.Id);
+
+            if (entity != null)
+                _context.Seasons.Remove(entity);
+
+            var affected = await _context.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+
+            return affected > 0;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
 }
