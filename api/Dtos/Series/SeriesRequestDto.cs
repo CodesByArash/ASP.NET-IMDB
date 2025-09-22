@@ -15,7 +15,6 @@ public class SeriesRequestDto
     public string Title { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Release year is required")]
-    [Range(1888, 2100, ErrorMessage = "Release year must be between 1888 and 2100")]
     public DateTime ReleaseDate { get; set; }
 
     [Required(ErrorMessage = "Description is required")]
