@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace api.Models;
 
 public class Media : IEntity
 {
+    [Key]
     public int Id { get; set; }
     public string ImdbId { get; set; }
     public string Title { get; set; }

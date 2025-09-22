@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using api.Models;
 using api.Enums;
 
 public class Rate : IEntity
 {
+    [Key]
     public int Id { get; set; }
     public int MediaId {get; set;}
     // public  ContentTypeEnum ContentType {get; set;}

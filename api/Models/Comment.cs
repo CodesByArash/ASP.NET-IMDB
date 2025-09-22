@@ -1,9 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using api.Enums;
 using api.Models;
 
 namespace api.Models;
 public class Comment : IEntity
 {
+    [Key]
     public int Id { get; set; }
     public string Text {get; set;} = string.Empty;
     public int MediaId { get; set; }

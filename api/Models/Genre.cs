@@ -1,9 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using api.Enums;
 using api.Models;
 
 namespace api.Models;
 public class Genre : IEntity
 {
+    [Key]
     public int Id { get; set;}
     public string Title {get; set;}
     

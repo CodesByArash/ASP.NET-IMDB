@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Models;
 
 
     public class Person : IEntity
     {
+        [Key]
         public int Id { get; set; }
         public string ImdbId { get; set; }
         public string FullName { get; set; }
