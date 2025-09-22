@@ -5,7 +5,7 @@ namespace api.Helpers;
 
 public static class Utils
 {   
-    public async static Task SeedAdminUser(IServiceProvider serviceProvider)
+    public static async Task SeedAdminUser(IServiceProvider serviceProvider)
     {
         var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
