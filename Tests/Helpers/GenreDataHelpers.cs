@@ -24,5 +24,4 @@ public static class GenreDataHelpers
     public static List<Genre> CreateGenres(int count) => _genreFaker.Generate(count);
 
     public static Genre CreateGenre() => _genreFaker.Generate();
-
 }
